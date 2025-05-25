@@ -1,85 +1,123 @@
-# Ex4 Evaluation of prefix expression
+# Ex2 Conversion of the infix expression into postfix expression
 ## DATE:
 ## AIM:
-To write a C function to evaluate the given prefix expression using stack and print the output of the given prefix expression from the stack inside the function . 
+To write a C program to convert the infix expression into postfix form using stack by following the operator precedence and associative rule.
 
 ## Algorithm
-1. Start
+1. Start the program.
 
-2.Initialize an empty stack s with a variable top for tracking the stack index.
+2.Initialize a stack and set the top index to -1.
 
-3.Define a push() function to add an element to the stack.
+3.Define the push() and pop() functions to add and remove elements from the stack.
 
-4.Define a pop() function to remove and return the top element from the stack.
+4.Define the priority() function to assign priorities to operators.
 
-5.In evalprefix(), loop through the given prefix expression from right to left.
+5.Traverse the expression in the IntoPost() function, handling operands, parentheses, and operators.
 
-6.For each character, if it’s an operator (+, *), pop two operands from the stack, perform the operation, and push the result.
+6.After processing the expression, pop and print any remaining operators from the stack.
 
-7.If it's a digit, convert it to an integer and push it onto the stack; finally, print the result after the loop ends.
-
-8.End  
-
+7.End.
+  
 ## Program:
 ```
 /*
-Program to evaluate the given prefix expression
+Program to convert the infix expression into postfix expression
 Developed by:  sarvesh s
-RegisterNumber: 2212222230135
+RegisterNumber: 212222230135
 
+*/
 #include<stdio.h> 
-#include<string.h> 
 #include<ctype.h> 
-int s[50]; 
-int top=0; 
-void push(int ch) 
+ 
+char stack[100]; 
+int top = -1; 
+void push(char x) 
 { 
-top++; 
-s[top]=ch; 
+stack[++top]=x; 
+ 
 } 
  
-int pop() 
+char pop() 
 { 
-int ch; 
-ch=s[top]; 
-top=top-1; 
-return(ch); 
+if(top==-1) 
+return 0; 
+else 
+return stack[top--]; 
 } 
+int priority(char x) 
+{ 
+if(x=='(') 
   
   
-void evalprefix(char p[50]) 
 { 
-int a,b,c,i; 
-for(i=strlen(p)-1;i>=0;i--) 
-{ 
-if(p[i]=='+') 
-{ 
-a=pop(); 
-b=pop(); 
-c=a+b; 
-push(c); 
+return 0; 
 } 
-else if(p[i]=='*') 
+if(x=='&'||x=='|') 
 { 
-a=pop(); 
-b=pop(); 
-c=a*b; 
-push(c); 
+return 1; 
+} 
+if(x=='+'||x=='-') 
+{ 
+return 2; 
+} 
+if(x=='*'||x=='/'||x=='%') 
+{ 
+return 3; 
+} 
+if(x=='^') 
+{ 
+return 4; 
+} 
+return 0; 
+} 
+char IntoPost(char *exp) 
+{ 
+char *e,x; 
+e=exp; 
+while(*e!='\0') 
+{ 
+if(isalnum(*e)) 
+{ 
+printf("%c ",*e); 
+} 
+else if(*e=='(') 
+{ 
+push(*e); 
+} 
+else if(*e==')') 
+{ 
+while((x=pop())!='(') 
+printf("%c ",x); 
 } 
 else 
 { 
-push(p[i]-48); 
+while(priority(stack[top])>=priority(*e)) 
+printf("%c ",pop()); 
+push(*e); 
 } 
+e++; 
 } 
-printf("%d",pop()); 
+  
+  
+ 
+while(top != -1) 
+{ 
+printf("%c ",pop()); 
+}return 0; 
 } 
+int main() 
+{ 
+char exp[100]="3%2+4*(A&B)"; 
+IntoPost(exp); 
+return 1; 
+}  
 */
 ```
 
 ## Output:
 
-![image](https://github.com/user-attachments/assets/c2863f62-6d17-4b34-a202-2dc259e837dd)
+![image](https://github.com/user-attachments/assets/7baf42b1-800f-4019-9547-3b424f35b39a)
 
 
 ## Result:
-Thus, the C program to evaluate the prefix expression using stack and print the output of the given prefix expression from the stack inside the function is implemented successfully.
+Thus, the C program to convert the infix expression into postfix form using stack by following the operator precedence and associative rule is implemented successfully.
